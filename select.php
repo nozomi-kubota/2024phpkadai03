@@ -1,18 +1,19 @@
 <?php
 //1.  DB接続します
+session_start();
 require_once('funcs.php');
-$pdo = db_conn();
+
 
 // //２．データ取得SQL作成
+$pdo = db_conn();
 $stmt = $pdo->prepare("SELECT * FROM gs_bookmark_table");
 $status = $stmt->execute();
 
 // //３．データ表示
- if ($status==false) {
-     //execute（SQL実行時にエラーがある場合）
+if ($status == false) {
+  //execute（SQL実行時にエラーがある場合）
   $error = $stmt->errorInfo();
-  exit("ErrorQuery:".$error[2]);
-
+  exit("ErrorQuery:" . $error[2]);
 }
 ?>
 
@@ -48,19 +49,19 @@ $status = $stmt->execute();
           <th>操作</th>
         </tr>
 
-          <!-- PHP でデータを取得し、以下の形式で表示する -->
-          <?php while ($result = $stmt->fetch(PDO::FETCH_ASSOC)): ?> 
-            <tr> 
-              <td><?= htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8') ?> :
-              <td>❖<?= htmlspecialchars($result['book_name'], ENT_QUOTES, 'UTF-8') ?>❖
-              <td><a href="<?= htmlspecialchars($result['book_url'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($result['book_url'], ENT_QUOTES, 'UTF-8') ?></a></td>
-              <td><?= htmlspecialchars($result['book_comment'], ENT_QUOTES, 'UTF-8') ?>
-              <td>
-                <a href="detail.php?id=<?= htmlspecialchars($result['id'], ENT_QUOTES, 'UTF-8') ?>">編集</a>
-                <a href="delete.php?id=<?= htmlspecialchars($result['id'], ENT_QUOTES, 'UTF-8') ?>" onclick="return confirm('本当に削除しますか？')">削除</a>
-              </td>
-            </tr> 
-          <?php endwhile; ?>    
+        <!-- PHP でデータを取得し、以下の形式で表示する -->
+        <?php while ($result = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
+          <tr>
+            <td><?= htmlspecialchars($result['date'], ENT_QUOTES, 'UTF-8') ?> :
+            <td>❖<?= htmlspecialchars($result['book_name'], ENT_QUOTES, 'UTF-8') ?>❖
+            <td><a href="<?= htmlspecialchars($result['book_url'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($result['book_url'], ENT_QUOTES, 'UTF-8') ?></a></td>
+            <td><?= htmlspecialchars($result['book_comment'], ENT_QUOTES, 'UTF-8') ?>
+            <td>
+              <a href="detail.php?id=<?= htmlspecialchars($result['id'], ENT_QUOTES, 'UTF-8') ?>">編集</a>
+              <a href="delete.php?id=<?= htmlspecialchars($result['id'], ENT_QUOTES, 'UTF-8') ?>" onclick="return confirm('本当に削除しますか？')">削除</a>
+            </td>
+          </tr>
+        <?php endwhile; ?>
 
       </table>
     </div>
